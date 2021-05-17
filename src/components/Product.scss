@@ -1,0 +1,39 @@
+.product {
+  border-radius: 3px;
+  border: 2px solid lightblue;
+  &__qty {
+    padding: 0 10px;
+    font-weight: bold;
+    color: #FF5E5E;
+    &:hover {
+      color: black;
+    }
+  }
+  &__add {
+    margin-left: auto;
+  }
+  &__buy {
+    display: flex;
+    align-items: center;
+    margin-top: 26px;
+    .field {
+      flex: 0 0 50px;
+      position: relative;
+      margin-bottom: 0;
+      label {
+        top: -20px;
+        margin-bottom: 0;
+        position: absolute;
+      }
+    }
+  }
+  input {
+    border-radius: 0;
+    text-align: center;
+  }
+  
+  button {
+    text-transform: uppercase;
+    border-radius: 0;
+  }
+}

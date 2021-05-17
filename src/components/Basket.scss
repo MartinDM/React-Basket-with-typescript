@@ -1,0 +1,31 @@
+.basket {
+  position: fixed;
+  padding-top: 50px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  width: 450px;
+  background-color: #fff;
+  z-index: 2005;
+  overflow-y: auto;
+  transition: transform .2s ease;
+  transform: translateX(100%);
+  padding: 80px;
+  box-shadow: 15px 0 20px 5px #2c241d;
+  &-active {
+    transform: none;
+  }
+  &__close {
+    cursor: pointer;
+    &:hover {
+      color: var(--primary);
+    }
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+}
