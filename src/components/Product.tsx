@@ -2,9 +2,7 @@ import {
   useState,
   useEffect,
   useContext,
-  ReactEventHandler,
   ChangeEvent,
-  MouseEvent,
   SyntheticEvent,
 } from "react";
 import "./Product.scss";
@@ -12,34 +10,42 @@ import { BasketContext } from '../contexts/BasketContext';
 
 const Product = (props: IProduct) => {
 
-  const [ qty, setQty] = useState("1");
   const { name, id, description, price } = props;
-  const [ isBasketOepn, setIsBasketOpen ] = useContext(BasketContext);
+  const [ isBasketOpen, setIsBasketOpen ] = useContext(BasketContext);
+  const [ qty, setQty ] = useState(1);
 
   const toggleBasket = (q: ChangeEvent<HTMLInputElement>) => {
     console.log(`added ${qty} of ${name} `);
   };
+ 
+
+  const handleQtyInput = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log('hit',e.currentTarget.value);
+    const { value } = e.currentTarget;
+    const isNumber = !isNaN(+ value);
+    if ( !isNumber ) return;
+    console.log('is number')
+    setQty( parseInt(value) )
+    console.log('qty now', qty)
+  };
 
   const handleQty = (e: SyntheticEvent) => {
-    let newQty: string =
+    console.log(e)
+    let newQty: number =
       (e.target as HTMLInputElement).innerText === "+"
-        ? (parseInt(qty) + 1).toString()
-        : (parseInt(qty) - 1).toString();
-
-    if (parseInt(newQty) <= 0) {
-      newQty = "1";
-    }
-    setQty(newQty);
+        ? (qty + 1)
+        : (qty - 1);
+      setQty(newQty > 1 ? newQty : 1);
   };
 
   const handleAdd = (e: SyntheticEvent) => {
-    e.preventDefault();
-    setIsBasketOpen(true)
+    console.log(qty);
+    setIsBasketOpen(true);
   }
 
-  const handleQtyInput = (e: SyntheticEvent) => {
-    setQty((e.target as HTMLInputElement).value);
-  };
+  // useEffect( () => {
+  //   setQty(qty)
+  // }, [qty])
 
   return (
     <div className="product p-1">
@@ -60,11 +66,8 @@ const Product = (props: IProduct) => {
                   <input
                     className="input"
                     type="text"
-                    placeholder=""
-                    onChange={(e) => {
-                      handleQtyInput(e);
-                    }}
                     value={qty}
+                    onChange={handleQtyInput}
                   />
                 </div>
               </div>
