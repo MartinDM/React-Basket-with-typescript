@@ -3,51 +3,57 @@ import {
   useEffect,
   useContext,
   ChangeEvent,
+  ChangeEvent,
   SyntheticEvent,
 } from "react";
 import "./Product.scss";
-import { BasketContext } from '../contexts/BasketContext';
+import { IProduct } from '../productData';
+import { BasketOpenContext, BasketItemsContext } from '../contexts/BasketContext';
 
-const Product = (props: IProduct) => {
+const Product = (props) => {
 
-  const { name, id, description, price } = props;
-  const [ isBasketOpen, setIsBasketOpen ] = useContext(BasketContext);
+  const { name, id, description, price  } = props;
+  const [ isBasketOpen, setIsBasketOpen ] = useContext(BasketOpenContext);
+  const [ basketItems, setBasketItems ] = useContext(BasketItemsContext);
+  const inventory = useContext(BasketItemsContext);
   const [ qty, setQty ] = useState(1);
-
-  const toggleBasket = (q: ChangeEvent<HTMLInputElement>) => {
-    console.log(`added ${qty} of ${name} `);
-  };
  
-
-  const handleQtyInput = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log('hit',e.currentTarget.value);
+  console.log(inventory)
+  // Direct qty entry
+  const handleQtyInput = (e: ChangeEvent<HTMLInputElement>) => { 
     const { value } = e.currentTarget;
     const isNumber = !isNaN(+ value);
     if ( !isNumber ) return;
-    console.log('is number')
-    setQty( parseInt(value) )
-    console.log('qty now', qty)
+    setQty( parseInt(value));
   };
 
+  // Increment qty
   const handleQty = (e: SyntheticEvent) => {
-    console.log(e)
+    console.log(qty)
     let newQty: number =
-      (e.target as HTMLInputElement).innerText === "+"
-        ? (qty + 1)
-        : (qty - 1);
-      setQty(newQty > 1 ? newQty : 1);
+      (e.target as HTMLInputElement).innerText === '+'
+        ? ( (qty + 1) )
+        : ( (qty - 1) );
+      setQty( newQty > 1 ? newQty : 1 );
   };
 
-  const handleAdd = (e: SyntheticEvent) => {
-    console.log(qty);
-    setIsBasketOpen(true);
-  }
+  
+  const handleAdd = (e) => {
+    const basketItems: IBasketItem[] = inventory.forEach( (product: IProduct) => {
+       if ( product.id === id ) {
+         product.qty = qty;
+       }
+    }); 
+    setBasketItems(basketItems);
+    setIsBasketOpen(true)
+  };
 
-  // useEffect( () => {
-  //   setQty(qty)
-  // }, [qty])
+  useEffect( () => {
+     console.log(qty)
+  }, [qty])
 
   return (
+    <>
     <div className="product p-1">
       <div className="product-details">
         <h2 className="title is-4 mb-0 product__title">{name}</h2>
@@ -55,6 +61,7 @@ const Product = (props: IProduct) => {
           <strong>{price}</strong>
         </p>
         {description && <p className="product__description">{description}</p>}
+        {id && <p className="product__id">{id}</p>}
       </div>
       <div className="y">
         <div className="columns">
@@ -89,7 +96,7 @@ const Product = (props: IProduct) => {
               </button>
               <button
                 className="button is-primary product__add"
-                onClick={handleAdd}
+                onClick={ handleAdd }
                 > Add
                 <span className="visually-hidden">{name}</span>
               </button>
@@ -98,16 +105,12 @@ const Product = (props: IProduct) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
-export interface IProduct {
-  name: String;
-  id: Number;
-  description?: String;
-  img?: String;
-  price: Number;
-  setBasketOpen?: Function
+export interface IBasketItem extends IProduct {
+  qty?: number;
 }
 
 export default Product;

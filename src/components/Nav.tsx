@@ -3,16 +3,15 @@ import "../App.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
-import { BasketContext } from '../contexts/BasketContext';
+import { BasketOpenContext, BasketItemsContext } from '../contexts/BasketContext';
 
 const BasketIcon = <FontAwesomeIcon icon={faShoppingBag} />;
 
 const Nav = (props: INav) => {
 
-  const [ isBasketOepn, setIsBasketOpen ] = useContext(BasketContext);
+  const setIsBasketOpen = useContext(BasketOpenContext);
 
-  const handleBasketToggle = () => {
-    console.log('toggling');
+  const handleBasketToggle = () => { 
     setIsBasketOpen(true)
   }
 

@@ -5,7 +5,9 @@ import Shop from './pages/Shop';
 import Checkout from './pages/Checkout';
 import Nav from './components/Nav';
 import Basket from './components/Basket';
-import {BasketProvider } from './contexts/BasketContext';
+import { BasketProvider } from './contexts/BasketContext'; 
+import PRODUCTS from 'productData';
+import { BasketItemsContext } from './contexts/BasketContext';
 
 import {
   BrowserRouter as Router,
@@ -14,14 +16,16 @@ import {
   Link
 } from "react-router-dom";
 
+const App = () => {
 
-function App() {
-  const [items, setItems] = useState([]);
+  const basketItems = useContext(BasketItemsContext).basketItems;
+  console.log(basketItems)
+
   return (
     <Router>
-          <BasketProvider> 
+          <BasketProvider>
           <div>
-              <Nav itemCount={items.length} />
+              <Nav itemCount={basketItems.length} />
               <main>
                 <Switch>
                   <Route path={"/"} exact key="9" component={Shop} />
@@ -33,9 +37,9 @@ function App() {
                 </Switch>
               </main>
               <Basket
-                itemCount={ items.length }
-                items={items}
-                handleClose={  () => {  console.log('test')} } />
+                itemCount={ basketItems.length }
+                items={basketItems}
+                handleClose={() => {  console.log('test')} } />
           </div>
         </BasketProvider>
     </Router>

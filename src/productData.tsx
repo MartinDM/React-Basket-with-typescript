@@ -1,4 +1,4 @@
-export const PRODUCTS = [
+export const PRODUCTS: IProduct[] = [
   {
     name: "Avocado",
     id: 92,
@@ -25,5 +25,13 @@ export const PRODUCTS = [
     price: 54.69,
   }
 ];
-
+export interface IProduct {
+  name: string;
+  id: number;
+  description: string;
+  price: number;
+  image: string;
+  qty?: number;
+}
+ 
 export default PRODUCTS;

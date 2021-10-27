@@ -2,12 +2,11 @@ import React, { useState, useEffect, useContext, createContext } from "react";
 import "./Basket.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { BasketContext } from '../contexts/BasketContext';
+import { BasketOpenContext, BasketItemsContext } from '../contexts/BasketContext';
 const Basket = (props: IBasket) => {
 
   // Current basket state from Props
-  const { handleClose } = props;
-  const [ isBasketOpen, setIsBasketOpen ] = useContext(BasketContext);
+  const [ isBasketOpen, setIsBasketOpen ] = useContext(BasketOpenContext);
 
   return (
     <div className={`basket${ isBasketOpen ? ` basket-active` : ``} `}>
