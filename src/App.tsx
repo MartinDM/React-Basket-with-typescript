@@ -5,9 +5,8 @@ import Shop from './pages/Shop';
 import Checkout from './pages/Checkout';
 import Nav from './components/Nav';
 import Basket from './components/Basket';
-import { BasketProvider } from './contexts/BasketContext'; 
+import { BasketContext } from './contexts/BasketContext'; 
 import PRODUCTS from 'productData';
-import { BasketItemsContext } from './contexts/BasketContext';
 
 import {
   BrowserRouter as Router,
@@ -18,12 +17,12 @@ import {
 
 const App = () => {
 
-  const basketItems = useContext(BasketItemsContext).basketItems;
-  console.log(basketItems)
+  const basketItems = useContext(BasketContext)
+  const [ isBasketOpen, setIsBasketOpen ] = useState(false);
 
   return (
     <Router>
-          <BasketProvider>
+          <BasketContext.Provider value={ [] }>
           <div>
               <Nav itemCount={basketItems.length} />
               <main>
@@ -39,9 +38,9 @@ const App = () => {
               <Basket
                 itemCount={ basketItems.length }
                 items={basketItems}
-                handleClose={() => {  console.log('test')} } />
+                handleClose={() => { console.log('test')} } />
           </div>
-        </BasketProvider>
+        </BasketContext.Provider>
     </Router>
   );
 }

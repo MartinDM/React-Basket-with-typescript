@@ -3,7 +3,6 @@ import "../App.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
-import { BasketOpenContext, BasketItemsContext } from '../contexts/BasketContext';
 
 const BasketIcon = <FontAwesomeIcon icon={faShoppingBag} />;
 

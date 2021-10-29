@@ -3,22 +3,18 @@ import {
   useEffect,
   useContext,
   ChangeEvent,
-  ChangeEvent,
   SyntheticEvent,
 } from "react";
 import "./Product.scss";
 import { IProduct } from '../productData';
-import { BasketOpenContext, BasketItemsContext } from '../contexts/BasketContext';
+import { BasketContext } from '../contexts/BasketContext';
 
 const Product = (props) => {
 
-  const { name, id, description, price  } = props;
-  const [ isBasketOpen, setIsBasketOpen ] = useContext(BasketOpenContext);
-  const [ basketItems, setBasketItems ] = useContext(BasketItemsContext);
-  const inventory = useContext(BasketItemsContext);
+  const { name, id, description, price  } = props; 
   const [ qty, setQty ] = useState(1);
- 
-  console.log(inventory)
+  const { setBasketItems } = useContext(BasketContext)
+  
   // Direct qty entry
   const handleQtyInput = (e: ChangeEvent<HTMLInputElement>) => { 
     const { value } = e.currentTarget;
