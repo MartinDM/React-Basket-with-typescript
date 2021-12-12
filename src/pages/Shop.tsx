@@ -3,13 +3,13 @@ import PRODUCTS from "../productData";
 import Product from "../components/Product";
 
 const Shop = ( props: IShop ) => {
-
+  
   return (
     <div className="container">
       <div className="columns">
       {PRODUCTS.map((product, i) => (
         <div className="column">
-          <Product 
+          <Product
             name={product.name}
             description={product.description}
             id={product.id}

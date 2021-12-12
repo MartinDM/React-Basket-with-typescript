@@ -1,18 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../App.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
+import { useBasket } from '../contexts/BasketContext';
 
-const BasketIcon = <FontAwesomeIcon icon={faShoppingBag} />;
+const Nav = (props) => {
+  
+  const BasketIcon = <FontAwesomeIcon icon={faShoppingBag} />;
 
-const Nav = (props: INav) => {
+  const { 
+    actions: { setIsBasketOpen, setBasketItems },
+    state: { basketItems, isBasketOpen }
+  } = useBasket();
+ 
+  const handleBasketToggle = () =>  setIsBasketOpen(!isBasketOpen);
 
-  const setIsBasketOpen = useContext(BasketOpenContext);
-
-  const handleBasketToggle = () => { 
-    setIsBasketOpen(true)
-  }
+  useEffect(() => { 
+  }, [basketItems])
 
   return (
     <nav className="nav">
@@ -27,11 +32,8 @@ const Nav = (props: INav) => {
                 <Link to="/checkout">Checkout</Link>
               </li>
               <li>
-              <a onClick={ (e) => {
-                  e.preventDefault();
-                  handleBasketToggle();
-                }}>
-                { BasketIcon } Basket ({ props.itemCount })
+                <a onClick={ handleBasketToggle }>
+                  { BasketIcon } Basket ({ basketItems.length })
                 </a>
               </li>
             </ul>
@@ -41,9 +43,5 @@ const Nav = (props: INav) => {
     </nav>
   );
 };
-
-interface INav {
-  itemCount: number;
-}
 
 export default Nav;

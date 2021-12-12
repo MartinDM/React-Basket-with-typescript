@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, { useMemo, useState, useEffect, useContext, createContext } from "react";
 import './App.scss';
 import 'normalize.css';
 import Shop from './pages/Shop';
 import Checkout from './pages/Checkout';
 import Nav from './components/Nav';
 import Basket from './components/Basket';
-import { BasketContext } from './contexts/BasketContext'; 
-import PRODUCTS from 'productData';
+import { BasketProvider, useBasket } from './contexts/BasketContext';
 
 import {
   BrowserRouter as Router,
@@ -17,30 +16,26 @@ import {
 
 const App = () => {
 
-  const basketItems = useContext(BasketContext)
-  const [ isBasketOpen, setIsBasketOpen ] = useState(false);
+  // const [ isBasketOpen, setIsBasketOpen ] = useState(false);
+  // const [ basketItems, setBasketItems ] = useState([]);
 
   return (
     <Router>
-          <BasketContext.Provider value={ [] }>
-          <div>
-              <Nav itemCount={basketItems.length} />
+          <BasketProvider> 
+              <Nav />
               <main>
                 <Switch>
                   <Route path={"/"} exact key="9" component={Shop} />
                   <Route path={"/checkout"} key="88" component={Checkout} />
-                  <Route path={"/shop"} key="7" 
+                  <Route path={"/shop"} 
                   render={(props) => (
                     <Shop {...props} />
                     )} />
                 </Switch>
               </main>
               <Basket
-                itemCount={ basketItems.length }
-                items={basketItems}
-                handleClose={() => { console.log('test')} } />
-          </div>
-        </BasketContext.Provider>
+                handleClose={() => { console.log('test')} } /> 
+        </BasketProvider>
     </Router>
   );
 }
