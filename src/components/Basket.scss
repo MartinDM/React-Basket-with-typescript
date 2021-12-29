@@ -11,7 +11,7 @@
   overflow-y: auto;
   transition: transform .2s ease;
   transform: translateX(100%);
-  padding: 80px;
+  padding: 38px;
   box-shadow: 15px 0 20px 5px #2c241d;
   &-active {
     transform: none;
@@ -25,7 +25,32 @@
   &__header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
+  }
+  &__product-img {
+    position: relative;
+    padding: 0;
+    height: 100px;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    img {
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+    }
+    &:after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(.75turn, rgba(255, 94, 94, 0.52), rgba(255, 255, 255, 0));
+      position: absolute;
+    }
+  }
+  &__list-item {
+    .title {
+      font-style: italic;
+    }
   }
 }

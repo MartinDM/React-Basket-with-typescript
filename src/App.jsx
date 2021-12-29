@@ -1,11 +1,10 @@
-import React, { useMemo, useState, useEffect, useContext, createContext } from "react";
 import './App.scss';
 import 'normalize.css';
 import Shop from './pages/Shop';
 import Checkout from './pages/Checkout';
 import Nav from './components/Nav';
 import Basket from './components/Basket';
-import { BasketProvider, useBasket } from './contexts/BasketContext';
+import { BasketProvider } from './contexts/BasketContext';
 
 import {
   BrowserRouter as Router,
@@ -15,9 +14,6 @@ import {
 } from "react-router-dom";
 
 const App = () => {
-
-  // const [ isBasketOpen, setIsBasketOpen ] = useState(false);
-  // const [ basketItems, setBasketItems ] = useState([]);
 
   return (
     <Router>

@@ -14,7 +14,7 @@ const Shop = ( props: IShop ) => {
             description={product.description}
             id={product.id}
             key={i}
-            price={product.price} 
+            price={ (+product.price).toFixed(2) } 
             />
         </div>
       ))}
