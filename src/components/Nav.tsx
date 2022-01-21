@@ -4,20 +4,18 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import { useBasket } from '../contexts/BasketContext';
+import { calcTotalQty, calcBasketTotalCost } from "../utils";
 
 const Nav = (props) => {
   
   const BasketIcon = <FontAwesomeIcon icon={faShoppingBag} />;
 
   const { 
-    actions: { setIsBasketOpen, setBasketItems },
-    state: { basketItems, isBasketOpen }
+    actions: { setIsBasketOpen, setBasketItems, setTotalQty },
+    state: { basketItems, isBasketOpen, totalQty }
   } = useBasket();
  
   const handleBasketToggle = () =>  setIsBasketOpen(!isBasketOpen);
-
-  useEffect(() => { 
-  }, [basketItems])
 
   return (
     <nav className="nav">
@@ -33,7 +31,11 @@ const Nav = (props) => {
               </li>
               <li>
                 <a onClick={ handleBasketToggle }>
-                  { BasketIcon } Basket ({ basketItems.length })
+                  { BasketIcon } Basket ({ totalQty }) 
+                  {
+                  basketItems.length > 0 &&
+                  ` £${calcBasketTotalCost(basketItems)}`
+                  }
                 </a>
               </li>
             </ul>

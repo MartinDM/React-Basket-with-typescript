@@ -4,12 +4,12 @@
   &__qty {
     padding: 0 10px;
     font-weight: bold;
-    color: #FF5E5E;
+    color: var(--primary);
     &:hover {
       color: black;
     }
   }
-  &__add {
+  .button {
     margin-left: auto;
   }
   &__buy {
@@ -27,7 +27,7 @@
       }
     }
   }
-  input {
+  input:not([type='button']) {
     border-radius: 0;
     text-align: center;
   }

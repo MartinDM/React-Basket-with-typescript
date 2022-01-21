@@ -1,31 +1,50 @@
 .basket {
   position: fixed;
+  display: flex;
+  flex-direction: column;
   padding-top: 50px;
   top: 0;
   right: 0;
   bottom: 0;
   width: 100%;
   width: 450px;
-  background-color: #fff;
+  background-color: #f9f9f9;
   z-index: 2005;
   overflow-y: auto;
   transition: transform .2s ease;
   transform: translateX(100%);
   padding: 38px;
   box-shadow: 15px 0 20px 5px #2c241d;
+  font-style: italic;
+  &-total {
+    border-top: 2px solid #f14667;
+    margin-top: auto;
+  }
   &-active {
     transform: none;
   }
-  &__close {
+  &__qty-title {
+    margin-right: 10%;
+  }
+  &__close,
+  &__delete {
     cursor: pointer;
     &:hover {
       color: var(--primary);
     }
   }
+  &__close {
+    font-size: 1.2em;
+  }
   &__header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 12px;
+    flex-wrap: wrap;
+  } 
+  &__count {
+    width: 100%;
+    margin-top: 12px;
   }
   &__product-img {
     position: relative;
@@ -34,6 +53,7 @@
     width: 100%;
     background-size: cover;
     background-repeat: no-repeat;
+    border: 3px solid white;
     img {
       position: absolute;
       left: -9999px;
@@ -52,5 +72,16 @@
     .title {
       font-style: italic;
     }
+  }
+}
+
+.btn {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-style: italic;
+  display: block;
+  &--checkout {
+    width: 100%;
+    display: block;
   }
 }

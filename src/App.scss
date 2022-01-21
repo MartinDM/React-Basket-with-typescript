@@ -1,8 +1,7 @@
 nav {
-  background: navy;
+  background: var(--secondary);
   display: flex;
   align-items: center;
-  list-style: none;
 }
 
 .nav-links { 
@@ -15,7 +14,12 @@ nav {
   list-style: none;
   a {
     padding: 12px;
-    color: white;
+    list-style: none;
+    color: #244a52;
+    font-size: 0.9em;
+    &:hover {
+      color: #1a2b2e;
+    }
   }
 }
 

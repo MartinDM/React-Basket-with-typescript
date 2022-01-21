@@ -9,6 +9,7 @@ import "./Product.scss";
 import { IProduct } from "../productData";
 import { BasketContext, useBasket } from "../contexts/BasketContext";
 import PRODUCTS from "../productData";
+import { calcTotalQty } from "utils";
 
 const Product = (props) => {
   const { name, id, description, price, unit } = props;
@@ -23,8 +24,8 @@ const Product = (props) => {
   // Direct qty entry
   const handleQtyInput = (e) => {
     const { value } = e.currentTarget;
-    if ( isNaN(+value) ) return;
-    setQty(!isNaN(parseInt(value)) ? parseInt(value) : 0 );
+    if ( !(+value) ) return;
+    setQty( (+value) ? parseInt(value) : 0 );
   };
   
   // Increment qty
@@ -36,30 +37,24 @@ const Product = (props) => {
   const handleAdd = (e) => {
     if ( qty === 0 ) return;
     setIsBasketOpen(true);
+
     // Construct an object containing new item details
     const newItem: IProduct = PRODUCTS.filter((p) => p.id === id && p).map((p) => {
       var o = Object.assign({}, p);
       o.qty = qty;
       return o;
-    })[0]; 
+    })[0];
 
     const isBasketEmpty = basketItems.length === 0;
-
-    const isItemInBasket = () => {
-      return basketItems.some( item => item.id === id);
-    };
-
-    if (isBasketEmpty) {
-      setBasketItems([ newItem ]);
-      return
-    };
-
-    if (isItemInBasket()) {
+    if ( isBasketEmpty ) return setBasketItems([newItem]);
+    const isItemInBasket = basketItems.some( item => item.id === id );
+    
+    if ( isItemInBasket ) {
       const updatedBasketItems: IProduct[] = basketItems.map( (item, i) => {
-        if( item.id === id ) {
-          item.qty = item.qty + qty
-        }
-        return { ...item }
+        if( item.id !== id ) {
+          return item 
+        } 
+        return item.qty = item.qty + qty
       });
       return setBasketItems(updatedBasketItems);
     } else {
@@ -72,7 +67,7 @@ const Product = (props) => {
   };
 
   useEffect(() => {
-    console.log(basketItems.length);
+    setQty( calcTotalQty )
   },[basketItems, setBasketItems]);
 
   return (
@@ -96,7 +91,7 @@ const Product = (props) => {
                     <input
                       className="input"
                       type="text"
-                      value={ !isNaN(qty) ? qty : 0 }
+                      value={ qty }
                       onChange={(e) => {
                         handleQtyInput(e);
                       }}
@@ -119,14 +114,12 @@ const Product = (props) => {
                 >
                   +
                 </button>
-                <button
-                  className="button is-primary product__add"
-                  onClick={handleAdd}
-                >
-                  {" "}
-                  Add
-                  <span className="visually-hidden">{name}</span>
-                </button>
+                <input
+                  type="button"
+                  className="btn button is-primary"
+                  onClick={ handleAdd }
+                  value="Add"
+                />
               </div>
             </div>
         
