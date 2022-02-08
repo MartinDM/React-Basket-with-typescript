@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./Basket.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { BasketContext, useBasket } from "../contexts/BasketContext";
+import { BasketContext } from "../contexts/BasketContext";
 import { calcTotalQty, calcBasketTotalCost } from "../utils";
 import { Transition, CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const Basket = (props) => {
-  const {
-    actions: { setIsBasketOpen, setBasketItems, setBasketQty, setTotalQty },
-    state: { basketItems, isBasketOpen, basketQty, totalQty },
-  } = useBasket();
-
-  const hasBasketItems = !basketItems?.length;
 
 
-  useEffect(() => {
-    setTotalQty(calcTotalQty(basketItems));
-  }, [basketItems]);
+  const   actions   = useContext(BasketContext); 
+  //const   basketItems    = useContext(BasketContext);  
+  
+
+  console.log(actions);
+   const hasBasketItems = false
+  //  const hasBasketItems = !basketItems?.length;
+
+
+  // useEffect(() => {
+  //   setTotalQty(calcTotalQty(basketItems));
+  // }, [basketItems]);
 
   const duration = 300;
 
@@ -32,13 +35,11 @@ const transitionStyles = {
   exiting:  { opacity: 0 },
   exited:  { opacity: 0 },
 };
-
-  const deleteItem = (id) => {
-    const updatedBasketItems = basketItems.filter( item => {
-      console.log(item)
-      return item.id !== id;
-    });
-    setBasketItems(updatedBasketItems)
+const isBasketOpen = false;
+const totalQty = 3;
+  const deleteItem: any = (id) => {
+    const updatedBasketItems = basketItems.filter( item => item.id !== id );
+    //setBasketItems(updatedBasketItems)
   }
 
   const basketItemContent = (item) => {
@@ -112,7 +113,7 @@ const transitionStyles = {
         <FontAwesomeIcon
           className="basket__close"
           onClick={() => {
-            setIsBasketOpen(false);
+           // setIsBasketOpen(false);
           }}
           icon={faTimes}
         />

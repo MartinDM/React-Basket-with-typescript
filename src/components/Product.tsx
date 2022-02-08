@@ -7,7 +7,7 @@ import {
 } from "react";
 import "./Product.scss";
 import { IProduct } from "../productData";
-import { BasketContext, useBasket } from "../contexts/BasketContext";
+import BaskeContext from '../contexts/BasketContext';
 import PRODUCTS from "../productData";
 import { calcTotalQty } from "utils";
 
@@ -15,10 +15,7 @@ const Product = (props) => {
   const { name, id, description, price, unit } = props;
   const [qty, setQty] = useState(0);
 
-  const {
-    actions: { setIsBasketOpen, setBasketItems, setBasketQty },
-    state: { isBasketOpen, basketItems, basketQty }
-  } = useBasket();  
+  const { products } = useContext(BasketContext);
  
 
   // Direct qty entry
@@ -30,7 +27,7 @@ const Product = (props) => {
   
   // Increment qty
   const handleQty = (type) => {
-    let newQty: number = type === "inc" ? qty + 1 : qty - 1;
+    let newQty = type === "inc" ? qty + 1 : qty - 1;
     setQty(newQty >= 1 ? newQty : 0 );
   };
 

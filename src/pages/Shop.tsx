@@ -1,13 +1,16 @@
 import React, { useContext, useState, useEffect } from "react";
-import PRODUCTS from "../productData";
 import Product from "../components/Product";
+import PRODUCTS from "../productData";
+import BasketContext from '../contexts/BasketContext';
 
 const Shop = ( props: IShop ) => {
-  
-  return (
+
+  const appContext =  useContext(BasketContext);  
+ 
+    return (
     <div className="container">
       <div className="columns">
-      {PRODUCTS.map((product, i) => (
+      {appContext.map((product, i) => (
         <div className="column">
           <Product
             name={product.name}
