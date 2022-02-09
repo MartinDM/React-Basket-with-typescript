@@ -1,8 +1,8 @@
 import { useState, useEffect, createContext, useMemo, useCallback } from 'react';
 import PRODUCTS, { IProduct } from '../productData';
 
-const Context = createContext({});
-
+export const BasketContext = createContext<IBasketContext>({});
+ 
 export const BasketProvider = ( props ) => {
 
   const [products, setProducts] = useState(PRODUCTS);
@@ -29,6 +29,7 @@ export const BasketProvider = ( props ) => {
     setBasketItems( newCart ); 
   }, [basketItems]);
 
+
   useEffect(() => {
     setTotalValue(0)
   }, [basketItems, products]);
@@ -38,7 +39,6 @@ export const BasketProvider = ( props ) => {
           products,
           basketItems,
           isBasketOpen,
-          filteredProducts,
           basketQty,
           totalValue,
           actions: { 
@@ -59,11 +59,31 @@ export const BasketProvider = ( props ) => {
   );
 
   return (
-    <Context.Provider
+    <BasketContext.Provider
       value={providerValue}>
       {props.children}
-    </Context.Provider>
+    </BasketContext.Provider>
   )
+};
+
+
+interface IBasketContext {
+  products?: [],
+  basketItems?: [],
+  isBasketOpen?: false,
+  basketQty?: 0,
+  totalValue?: 0,
+  actions?: {
+    setProducts: () => void,
+    filterProductsByName: () => void,
+    setIsBasketOpen: () => void,
+    setBasketItems:  () => void,
+    setBasketQty?:  () => void,
+    setTotalValue: () => void,
+    setTotalQty?: () => void,
+    addProductToCart: () => void,
+    removeProductFromCartAtInd: () => void,
+  }
 }
 
-export default Context;
+export default BasketContext;

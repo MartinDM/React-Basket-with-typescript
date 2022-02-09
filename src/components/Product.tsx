@@ -7,16 +7,16 @@ import {
 } from "react";
 import "./Product.scss";
 import { IProduct } from "../productData";
-import BaskeContext from '../contexts/BasketContext';
+import BasketContext from '../contexts/BasketContext';
 import PRODUCTS from "../productData";
 import { calcTotalQty } from "utils";
 
 const Product = (props) => {
   const { name, id, description, price, unit } = props;
   const [qty, setQty] = useState(0);
-
-  const { products } = useContext(BasketContext);
- 
+  console.log(BasketContext);
+  
+const basketItems = [];
 
   // Direct qty entry
   const handleQtyInput = (e) => {

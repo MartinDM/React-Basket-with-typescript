@@ -2,25 +2,22 @@ import React, { useEffect, useState, useContext } from "react";
 import "./Basket.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { BasketContext } from "../contexts/BasketContext";
+import BasketContext from "../contexts/BasketContext";
 import { calcTotalQty, calcBasketTotalCost } from "../utils";
 import { Transition, CSSTransition, TransitionGroup } from 'react-transition-group';
 
-const Basket = (props) => {
+const Basket = (props) => { 
 
-
-  const   actions   = useContext(BasketContext); 
-  //const   basketItems    = useContext(BasketContext);  
-  
+  const { basketItems, actions } = useContext(BasketContext);
+  console.log(basketItems);
+  const hasBasketItems = !basketItems?.length;
 
   console.log(actions);
-   const hasBasketItems = false
-  //  const hasBasketItems = !basketItems?.length;
 
-
-  // useEffect(() => {
-  //   setTotalQty(calcTotalQty(basketItems));
-  // }, [basketItems]);
+  useEffect(() => {
+    const totalQty = calcTotalQty(basketItems) || 0;
+    actions.setTotalQty(totalQty);
+  }, [basketItems]);
 
   const duration = 300;
 
@@ -29,16 +26,16 @@ const Basket = (props) => {
     opacity: 0,
   }
 
-const transitionStyles = {
-  entering: { opacity: 1 },
-  entered:  { opacity: 1 },
-  exiting:  { opacity: 0 },
-  exited:  { opacity: 0 },
-};
-const isBasketOpen = false;
-const totalQty = 3;
+  const transitionStyles = {
+    entering: { opacity: 1 },
+    entered: { opacity: 1 },
+    exiting: { opacity: 0 },
+    exited: { opacity: 0 },
+  };
+  const isBasketOpen = false;
+  const totalQty = 3;
   const deleteItem: any = (id) => {
-    const updatedBasketItems = basketItems.filter( item => item.id !== id );
+    const updatedBasketItems = basketItems.filter(item => item.id !== id);
     //setBasketItems(updatedBasketItems)
   }
 
@@ -46,37 +43,37 @@ const totalQty = 3;
     const { image, qty, name, unit, price, description, id } = item;
     return (
       <div className="columns">
-          <div
-            className="column is-two-fifths basket__product-img"
-            style={{ backgroundImage: `url(\'images/${image}')` }}
-            >
-            <img src={`images/${image}`} alt={`${name} - ${description}`} />
-          </div>
-          <div className="column is-two-fifths">
-            <h3 className="title is-5">{name}</h3>
-            <p>£{(+price).toFixed(2)}  
-             /{unit ? unit : 'each'}</p>
-          </div>
-          <div className="column">
-            <p className="has-text-right">
-              <span>{qty}</span>
-            </p>
-          </div>
-          <div className="column has-text-right">
-              <FontAwesomeIcon
-              className="basket__delete"
-              onClick={() => {
-                deleteItem(id);
-              }}
-              icon={faTrash}
-            />
-          </div>
-       </div> 
+        <div
+          className="column is-two-fifths basket__product-img"
+          style={{ backgroundImage: `url(\'images/${image}')` }}
+        >
+          <img src={`images/${image}`} alt={`${name} - ${description}`} />
+        </div>
+        <div className="column is-two-fifths">
+          <h3 className="title is-5">{name}</h3>
+          <p>£{(+price).toFixed(2)}
+            /{unit ? unit : 'each'}</p>
+        </div>
+        <div className="column">
+          <p className="has-text-right">
+            <span>{qty}</span>
+          </p>
+        </div>
+        <div className="column has-text-right">
+          <FontAwesomeIcon
+            className="basket__delete"
+            onClick={() => {
+              deleteItem(id);
+            }}
+            icon={faTrash}
+          />
+        </div>
+      </div>
     );
   };
-  
+
   const basketItemsTotalContent = () => {
-    
+
     const total = calcBasketTotalCost(basketItems);
 
     return (
@@ -89,16 +86,16 @@ const totalQty = 3;
             <p className="title is-5 has-text-weight-bold">£{total}</p>
           </div>
         </div>
-        <input onClick={ () => {
+        <input onClick={() => {
 
         }}
-        className="btn btn--checkout button is-danger"
-        type="button"
-        value="Checkout" />
+          className="btn btn--checkout button is-danger"
+          type="button"
+          value="Checkout" />
       </div>
     )
   };
-  
+
   const basketQtyContent = () => {
     const isPlural = totalQty > 1;
     return !basketItems?.length
@@ -113,16 +110,16 @@ const totalQty = 3;
         <FontAwesomeIcon
           className="basket__close"
           onClick={() => {
-           // setIsBasketOpen(false);
+            // setIsBasketOpen(false);
           }}
           icon={faTimes}
         />
         <p className="basket__count">
-        { basketQtyContent() }
+          {basketQtyContent()}
         </p>
       </header>
-      
-      { basketItems?.length ? (
+
+      {basketItems?.length ? (
         <div className="columns">
           <div className="column has-text-right has-text-weight-bold">
             <p className="basket__qty-title">Qty</p>
@@ -133,11 +130,11 @@ const totalQty = 3;
       )}
 
       <div className="basket__items-list">
-        { basketItems.length > 0 &&
+        {basketItems.length > 0 &&
           basketItems.map((i) => basketItemContent(i))}
       </div>
 
-      { basketItemsTotalContent() }
+      {basketItemsTotalContent()}
 
     </div>
   );
