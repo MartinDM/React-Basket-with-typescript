@@ -3,18 +3,15 @@ import "../App.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
-import { calcTotalQty, calcBasketTotalCost } from "../utils";
-import BasketContext from '../contexts/BasketContext';
+import { calcTotalQty, calcTotalCost } from "../utils";
+import { BasketContext } from '../contexts/BasketContext';
 
-const Nav = (props) => {
+const Nav = () => {
 
-  const { products } = useContext(BasketContext);
-  
-  console.log(products);
+  const { basketQty, isBasketOpen, actions, basketItems } = useContext(BasketContext);
+
   const BasketIcon = <FontAwesomeIcon icon={faShoppingBag} />;
-  const isBasketOpen = useContext(BasketContext);
-  //const handleBasketToggle = () =>  //setIsBasketOpen(!isBasketOpen);
-  const handleBasketToggle = () =>  {}
+  const handleBasketToggle = () => actions.setIsBasketOpen(!isBasketOpen)
 
   return (
     <nav className="nav">
@@ -29,11 +26,11 @@ const Nav = (props) => {
                 <Link to="/checkout">Checkout</Link>
               </li>
               <li>
-                <a onClick={ handleBasketToggle }>
-                  { BasketIcon } Basket ({ totalQty }) 
+                <a onClick={handleBasketToggle}>
+                  {BasketIcon} Basket ({basketQty})
                   {
-                  props.basketItems.length > 0 &&
-                  ` £${calcBasketTotalCost(basketItems)}`
+                    basketItems.length > 0 &&
+                    ` £${calcTotalCost(basketItems)}`
                   }
                 </a>
               </li>

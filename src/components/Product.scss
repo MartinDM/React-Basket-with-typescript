@@ -1,6 +1,7 @@
+$primary: var(--primary);
+
 .product {
   border-radius: 3px;
-  border: 2px solid lightblue;
   &__qty {
     padding: 0 10px;
     font-weight: bold;
@@ -9,13 +10,11 @@
       color: black;
     }
   }
-  .button {
-    margin-left: auto;
-  }
   &__buy {
     display: flex;
     align-items: center;
     margin-top: 26px;
+    color: var(--primray);
     .field {
       flex: 0 0 50px;
       position: relative;
@@ -27,13 +26,45 @@
       }
     }
   }
+  .btn { 
+    background: $primary;
+  }
   input:not([type='button']) {
+    border: 2px solid black;
     border-radius: 0;
     text-align: center;
   }
-  
-  button {
-    text-transform: uppercase;
-    border-radius: 0;
+  input[type="button"] {
+    &:before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      -webkit-transform: scaleX(0);
+      transform: scaleX(0);
+      -webkit-transform-origin: 0 50%;
+      transform-origin: 0 50%;
+      -webkit-transition-property: transform;
+      transition-property: transform;
+      -webkit-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+      -webkit-transition-timing-function: ease-out;
+      transition-timing-function: ease-out;
+    }
+    &:hover,
+    &:focus,
+    &:active {
+      color: white;
+      background: #363636;
+    }
+    &:hover:before,
+    &:focus:before,
+    &:active:before {
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+    }
   }
 }

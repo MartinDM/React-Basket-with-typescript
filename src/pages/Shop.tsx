@@ -1,23 +1,24 @@
 import React, { useContext, useState, useEffect } from "react";
 import Product from "../components/Product";
 import PRODUCTS from "../productData";
-import BasketContext from '../contexts/BasketContext';
 
-const Shop = ( props: IShop ) => {
 
-  const appContext =  useContext(BasketContext);  
- 
+const baseUrl = '/images/';
+
+export const Shop = ( props: IShop ) => {
     return (
     <div className="container">
       <div className="columns">
-      {appContext.map((product, i) => (
+      {PRODUCTS.map((p, i) => (
         <div className="column">
           <Product
-            name={product.name}
-            description={product.description}
-            id={product.id}
+            name={p.name}
+            description={p.description}
+            id={p.id}
+            image={p.image}
             key={i}
-            price={ (+product.price).toFixed(2) } 
+            unit={p.unit}
+            price={ (+p.price).toFixed(2) } 
             />
         </div>
       ))}
@@ -26,7 +27,7 @@ const Shop = ( props: IShop ) => {
   );
 };
 
+export default Shop;
+
 export interface IShop {
 }
-
-export default Shop;

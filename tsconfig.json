@@ -2,10 +2,11 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "baseUrl": "./src",
-    "target": "es5",
+    "target": "es6",
     "checkJs": false,
     "lib": [
       "dom",
+      "es6",
       "dom.iterable",
       "esnext"
     ],
@@ -24,6 +25,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "./src",
+    "./src/index.d.ts"
   ]
 }

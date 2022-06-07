@@ -1,71 +1,49 @@
 import {
   useState,
   useEffect,
-  useContext,
-  ChangeEvent,
-  SyntheticEvent,
+  useContext
 } from "react";
 import "./Product.scss";
 import { IProduct } from "../productData";
 import BasketContext from '../contexts/BasketContext';
 import PRODUCTS from "../productData";
 import { calcTotalQty } from "utils";
+//import * as imgSrc from '../images';
 
 const Product = (props) => {
-  const { name, id, description, price, unit } = props;
+
+  const { name, id, description, price, image, unit } = props;
   const [qty, setQty] = useState(0);
-  console.log(BasketContext);
-  
-const basketItems = [];
+  const { basketItems, actions } = useContext(BasketContext);
+
+  const isBasketEmpty = basketItems.length === 0;
 
   // Direct qty entry
   const handleQtyInput = (e) => {
-    const { value } = e.currentTarget;
-    if ( !(+value) ) return;
-    setQty( (+value) ? parseInt(value) : 0 );
+    const value = e.currentTarget.value;
+    console.log('input')
+    if (!+value) return;
+    setQty(+value);
   };
-  
+
   // Increment qty
   const handleQty = (type) => {
-    let newQty = type === "inc" ? qty + 1 : qty - 1;
-    setQty(newQty >= 1 ? newQty : 0 );
+    let newQty = type === "inc"
+      ? +qty + 1
+      : +qty - 1 > -1
+        ? +qty - 1
+        : 0;
+    setQty(newQty >= 1 ? newQty : 0);
   };
 
-  const handleAdd = (e) => {
-    if ( qty === 0 ) return;
-    setIsBasketOpen(true);
-
-    // Construct an object containing new item details
-    const newItem: IProduct = PRODUCTS.filter((p) => p.id === id && p).map((p) => {
-      var o = Object.assign({}, p);
-      o.qty = qty;
-      return o;
-    })[0];
-
-    const isBasketEmpty = basketItems.length === 0;
-    if ( isBasketEmpty ) return setBasketItems([newItem]);
-    const isItemInBasket = basketItems.some( item => item.id === id );
-    
-    if ( isItemInBasket ) {
-      const updatedBasketItems: IProduct[] = basketItems.map( (item, i) => {
-        if( item.id !== id ) {
-          return item 
-        } 
-        return item.qty = item.qty + qty
-      });
-      return setBasketItems(updatedBasketItems);
-    } else {
-      const updatedBasketItems: IProduct[] = [
-        ...basketItems,
-        newItem
-      ];
-      return setBasketItems(updatedBasketItems);
-    }
-  };
+  const handleAdd = () => {
+    actions.addProductToCart(id, qty)
+  }
 
   useEffect(() => {
-    setQty( calcTotalQty )
-  },[basketItems, setBasketItems]);
+    setQty(calcTotalQty);
+    //console.log('new basket:', basketItems)
+  }, [basketItems, actions.setBasketItems]);
 
   return (
     <>
@@ -73,61 +51,53 @@ const basketItems = [];
         <div className="product-details">
           <h2 className="title is-4 mb-0 product__title">{name}</h2>
           <p className="product__price has-text-weight-bold">
-             £{price} 
+            £{price}
           </p>
           {description && <p className="product__description">{description}</p>}
           {id && <p className="product__id">{id}</p>}
         </div>
-        
-          <div className="columns">
-            <div className="column">
-              <div className="product__buy">
-                <div className="field">
-                  <label className="label">Qty</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      value={ qty }
-                      onChange={(e) => {
-                        handleQtyInput(e);
-                      }}
-                    />
-                  </div>
+
+        <div className="columns">
+          <div className="column">
+            <div className="product__buy">
+              <div className="field">
+                <label className="label">Qty</label>
+                <div className="control">
+                  <input
+                    className="input"
+                    type="text"
+                    value={qty}
+                    onChange={(e) => {
+                      handleQtyInput(e);
+                    }}
+                  />
                 </div>
-                <button
-                  className="button is-ghost product__qty"
-                  onClick={(e) => {
-                    handleQty("dec");
-                  }}
-                >
-                  -
-                </button>
-                <button
-                  className="button is-ghost product__qty"
-                  onClick={(e) => {
-                    handleQty("inc");
-                  }}
-                >
-                  +
-                </button>
-                <input
-                  type="button"
-                  className="btn button is-primary"
-                  onClick={ handleAdd }
-                  value="Add"
-                />
               </div>
+              <button
+                className="button is-ghost product__qty"
+                onClick={() => handleQty("dec")}
+              >
+                -
+              </button>
+              <button
+                className="button is-ghost product__qty"
+                onClick={() => handleQty("inc")}
+              >
+                +
+              </button>
+              <input
+                type="button"
+                className="btn button is-primary"
+                onClick={() => handleAdd()}
+                value="Add"
+              />
             </div>
-        
+          </div>
+
         </div>
       </div>
     </>
   );
-};
-
-export interface IBasketItem extends IProduct {
-  qty?: number;
 }
 
 export default Product;

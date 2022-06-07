@@ -1,3 +1,5 @@
+$primary: var(--primary);
+
 .basket {
   position: fixed;
   display: flex;
@@ -17,7 +19,7 @@
   box-shadow: 15px 0 20px 5px #2c241d;
   font-style: italic;
   &-total {
-    border-top: 2px solid #f14667;
+    border-top: 2px solid $primary;
     margin-top: auto;
   }
   &-active {
@@ -30,7 +32,7 @@
   &__delete {
     cursor: pointer;
     &:hover {
-      color: var(--primary);
+      color: $primary;
     }
   }
   &__close {
@@ -76,12 +78,20 @@
 }
 
 .btn {
+  color: white;
+  outline: 0;
+  border: none;
   font-weight: bold;
   text-transform: uppercase;
   font-style: italic;
   display: block;
+  background: $primary;
   &--checkout {
     width: 100%;
     display: block;
+    &:hover {
+      color: white;
+      background: #363636;
+    }
   }
 }

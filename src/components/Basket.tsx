@@ -3,40 +3,21 @@ import "./Basket.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import BasketContext from "../contexts/BasketContext";
-import { calcTotalQty, calcBasketTotalCost } from "../utils";
-import { Transition, CSSTransition, TransitionGroup } from 'react-transition-group';
+import { calcTotalCost } from "../utils";
+import { IProduct } from "productData";
 
-const Basket = (props) => { 
+const Basket = (props) => {
 
-  const { basketItems, actions } = useContext(BasketContext);
-  console.log(basketItems);
-  const hasBasketItems = !basketItems?.length;
-
-  console.log(actions);
+  const { basketItems, basketQty, isBasketOpen, actions } = useContext(BasketContext);
 
   useEffect(() => {
-    const totalQty = calcTotalQty(basketItems) || 0;
-    actions.setTotalQty(totalQty);
+    const qtyInBasket = basketItems.length;
+    actions.setBasketQty(qtyInBasket);
   }, [basketItems]);
 
-  const duration = 300;
-
-  const defaultStyle = {
-    transition: `opacity ${duration}ms ease-in-out`,
-    opacity: 0,
-  }
-
-  const transitionStyles = {
-    entering: { opacity: 1 },
-    entered: { opacity: 1 },
-    exiting: { opacity: 0 },
-    exited: { opacity: 0 },
-  };
-  const isBasketOpen = false;
-  const totalQty = 3;
   const deleteItem: any = (id) => {
-    const updatedBasketItems = basketItems.filter(item => item.id !== id);
-    //setBasketItems(updatedBasketItems)
+    const updatedBasketItems = basketItems?.filter(item => item.id !== id);
+    actions.setBasketItems(updatedBasketItems)
   }
 
   const basketItemContent = (item) => {
@@ -74,8 +55,7 @@ const Basket = (props) => {
 
   const basketItemsTotalContent = () => {
 
-    const total = calcBasketTotalCost(basketItems);
-
+    const total = calcTotalCost(basketItems);
     return (
       <div className="basket-total pt-5">
         <div className="columns">
@@ -89,7 +69,7 @@ const Basket = (props) => {
         <input onClick={() => {
 
         }}
-          className="btn btn--checkout button is-danger"
+          className="btn btn--checkout button"
           type="button"
           value="Checkout" />
       </div>
@@ -97,20 +77,19 @@ const Basket = (props) => {
   };
 
   const basketQtyContent = () => {
-    const isPlural = totalQty > 1;
     return !basketItems?.length
-      ? "Basket empty"
-      : `${totalQty} item${isPlural ? "s" : ""}`;
+      ? 'Basket empty'
+      : `${basketQty} item${basketQty === 1 ? '' : 's'}`;
   };
 
   return (
-    <div className={`basket${isBasketOpen ? ` basket-active` : ``} `}>
+    <div className={`basket${isBasketOpen ? ` basket-active` : ``}`}>
       <header className="basket__header">
         <h3 className="title is-5 mb-0">Basket</h3>
         <FontAwesomeIcon
           className="basket__close"
           onClick={() => {
-            // setIsBasketOpen(false);
+            actions.setIsBasketOpen(false);
           }}
           icon={faTimes}
         />
@@ -130,8 +109,8 @@ const Basket = (props) => {
       )}
 
       <div className="basket__items-list">
-        {basketItems.length > 0 &&
-          basketItems.map((i) => basketItemContent(i))}
+        {basketItems &&
+          basketItems?.map((i) => basketItemContent(i))}
       </div>
 
       {basketItemsTotalContent()}
