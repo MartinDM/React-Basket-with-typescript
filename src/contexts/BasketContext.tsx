@@ -1,5 +1,7 @@
 import { useState, useEffect, createContext, useMemo, useCallback } from 'react';
-import PRODUCTS, { IProduct } from '../productData';
+import PRODUCTS from '../productData';
+import { IProduct } from 'types';
+
 interface IActionObj {
   setProducts: Function,
   filterProductsByName: Function,
@@ -13,9 +15,9 @@ interface IBasketContext {
   products?: IProduct[],
   basketItems: IProduct[],
   isBasketOpen?: boolean,
-  basketQty?: number,
+  basketQty: number,
   basketValue?: number,
-  actions: IActionObj
+  actions: IActionObj,
 }
 
 export const BasketContext = createContext<IBasketContext>({
@@ -56,7 +58,6 @@ export const BasketProvider = (props) => {
 
   const addProductToCart = useCallback((id, qty) => {
     if (qty === 0) return;
-    const isBasketEmpty = basketItems.length === 0;
 
     const newItem: IProduct = PRODUCTS.filter((p) => p.id === id && p).map((p) => {
       var o = Object.assign({}, p);
@@ -66,7 +67,7 @@ export const BasketProvider = (props) => {
       }
     })[0];
 
-    if (isBasketEmpty) {
+    if (basketItems.length === 0) {
       return setBasketItems([newItem]);
     }
 

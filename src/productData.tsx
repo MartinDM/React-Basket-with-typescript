@@ -1,3 +1,5 @@
+import { IProduct } from "types";
+
 export const PRODUCTS: IProduct[] = [
   {
     name: "Avocado",
@@ -5,7 +7,7 @@ export const PRODUCTS: IProduct[] = [
     description: "Nunc rhoncus dui vel sem. Sed sagittis. Nam congue, risus semper porta volutpat, quam pede lobortis ligula, sit amet eleifend pede libero quis orci. Nullam molestie nibh in lectus.",
     price: 1.20,
     image: 'avocado.jpg',
-    unit: 'fruit',
+    unit: 'each',
     qty: 0,
   }, {
     name: "Oranges",
@@ -33,14 +35,6 @@ export const PRODUCTS: IProduct[] = [
     qty: 0,
   }
 ];
-export interface IProduct {
-  name: string;
-  id: number;
-  description: string;
-  price: number;
-  image: string;
-  unit: string;
-  qty: number;
-}
+
 
 export default PRODUCTS;

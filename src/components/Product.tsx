@@ -4,57 +4,52 @@ import {
   useContext
 } from "react";
 import "./Product.scss";
-import { IProduct } from "../productData";
 import BasketContext from '../contexts/BasketContext';
-import PRODUCTS from "../productData";
 import { calcTotalQty } from "utils";
-//import * as imgSrc from '../images';
 
 const Product = (props) => {
 
   const { name, id, description, price, image, unit } = props;
-  const [qty, setQty] = useState(0);
+  const [buyQty, setBuyQty] = useState(1);
   const { basketItems, actions } = useContext(BasketContext);
-
-  const isBasketEmpty = basketItems.length === 0;
 
   // Direct qty entry
   const handleQtyInput = (e) => {
     const value = e.currentTarget.value;
-    console.log('input')
     if (!+value) return;
-    setQty(+value);
+    setBuyQty(+value);
   };
 
   // Increment qty
-  const handleQty = (type) => {
-    let newQty = type === "inc"
-      ? +qty + 1
-      : +qty - 1 > -1
-        ? +qty - 1
-        : 0;
-    setQty(newQty >= 1 ? newQty : 0);
+  const handleQtyIncrement = (type) => {
+    let newQty = (type === "inc") ? +buyQty + 1 : +buyQty - 1
+    setBuyQty(newQty > 1 ? newQty : 1);
   };
 
   const handleAdd = () => {
-    actions.addProductToCart(id, qty)
+    actions.setIsBasketOpen(true);
+    actions.addProductToCart(id, buyQty)
+    setBuyQty(1)
   }
 
   useEffect(() => {
-    setQty(calcTotalQty);
-    //console.log('new basket:', basketItems)
+    console.log('++')
+    setBuyQty(1);
   }, [basketItems, actions.setBasketItems]);
+
+  console.log(buyQty)
 
   return (
     <>
       <div className="product p-1">
         <div className="product-details">
+          <div className="product__img mb-2" style={{ backgroundImage: `url(images/${image})` }}></div>
           <h2 className="title is-4 mb-0 product__title">{name}</h2>
           <p className="product__price has-text-weight-bold">
             £{price}
+            {unit && <span className="product__unit">{`${unit}`}</span>}
           </p>
-          {description && <p className="product__description">{description}</p>}
-          {id && <p className="product__id">{id}</p>}
+          {description && <p className="product__description mt-2 mb-2">{description}</p>}
         </div>
 
         <div className="columns">
@@ -66,7 +61,7 @@ const Product = (props) => {
                   <input
                     className="input"
                     type="text"
-                    value={qty}
+                    value={buyQty}
                     onChange={(e) => {
                       handleQtyInput(e);
                     }}
@@ -75,13 +70,13 @@ const Product = (props) => {
               </div>
               <button
                 className="button is-ghost product__qty"
-                onClick={() => handleQty("dec")}
+                onClick={() => handleQtyIncrement("dec")}
               >
                 -
               </button>
               <button
                 className="button is-ghost product__qty"
-                onClick={() => handleQty("inc")}
+                onClick={() => handleQtyIncrement("inc")}
               >
                 +
               </button>

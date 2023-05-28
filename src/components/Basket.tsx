@@ -1,57 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import "./Basket.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import BasketContext from "../contexts/BasketContext";
 import { calcTotalCost } from "../utils";
-import { IProduct } from "productData";
+import { BasketItem } from "./BasketItem/BasketItem";
 
 const Basket = (props) => {
 
+
   const { basketItems, basketQty, isBasketOpen, actions } = useContext(BasketContext);
-
-  useEffect(() => {
-    const qtyInBasket = basketItems.length;
-    actions.setBasketQty(qtyInBasket);
-  }, [basketItems]);
-
-  const deleteItem: any = (id) => {
-    const updatedBasketItems = basketItems?.filter(item => item.id !== id);
-    actions.setBasketItems(updatedBasketItems)
-  }
-
-  const basketItemContent = (item) => {
-    const { image, qty, name, unit, price, description, id } = item;
-    return (
-      <div className="columns">
-        <div
-          className="column is-two-fifths basket__product-img"
-          style={{ backgroundImage: `url(\'images/${image}')` }}
-        >
-          <img src={`images/${image}`} alt={`${name} - ${description}`} />
-        </div>
-        <div className="column is-two-fifths">
-          <h3 className="title is-5">{name}</h3>
-          <p>£{(+price).toFixed(2)}
-            /{unit ? unit : 'each'}</p>
-        </div>
-        <div className="column">
-          <p className="has-text-right">
-            <span>{qty}</span>
-          </p>
-        </div>
-        <div className="column has-text-right">
-          <FontAwesomeIcon
-            className="basket__delete"
-            onClick={() => {
-              deleteItem(id);
-            }}
-            icon={faTrash}
-          />
-        </div>
-      </div>
-    );
-  };
 
   const basketItemsTotalContent = () => {
 
@@ -66,12 +24,12 @@ const Basket = (props) => {
             <p className="title is-5 has-text-weight-bold">£{total}</p>
           </div>
         </div>
-        <input onClick={() => {
-
-        }}
-          className="btn btn--checkout button"
-          type="button"
-          value="Checkout" />
+        {
+          !!basketItems.length &&
+          <button onClick={() => { }}
+            className="btn btn--checkout button"
+            value="Checkout">Checkout</button>
+        }
       </div>
     )
   };
@@ -79,7 +37,7 @@ const Basket = (props) => {
   const basketQtyContent = () => {
     return !basketItems?.length
       ? 'Basket empty'
-      : `${basketQty} item${basketQty === 1 ? '' : 's'}`;
+      : `${basketQty} item${basketQty > 1 ? 's' : ''}`;
   };
 
   return (
@@ -110,7 +68,9 @@ const Basket = (props) => {
 
       <div className="basket__items-list">
         {basketItems &&
-          basketItems?.map((i) => basketItemContent(i))}
+          basketItems.map((i) => <BasketItem {...i} />
+          )
+        }
       </div>
 
       {basketItemsTotalContent()}

@@ -21,16 +21,15 @@ const App = () => {
               <Nav />
               <main>
                 <Switch>
-                  <Route path={"/"} exact key="9" component={Shop} />
-                  <Route path={"/checkout"} key="88" component={Checkout} />
+                  <Route path={"/"} exact key="0" component={Shop} />
+                  <Route path={"/checkout"} key="1" component={Checkout} />
                   <Route path={"/shop"} 
-                  render={(props) => (
-                    <Shop {...props} />
+                         render={(props) => (
+                    <Shop />
                     )} />
                 </Switch>
               </main>
-              <Basket
-                handleClose={() => { console.log('test')} } /> 
+              <Basket handleClose={() => { console.log('test')} } /> 
         </BasketProvider>
     </Router>
   );

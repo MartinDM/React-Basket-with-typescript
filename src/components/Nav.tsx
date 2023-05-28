@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import "../App.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
-import { calcTotalQty, calcTotalCost } from "../utils";
+import { calcTotalCost } from "../utils";
 import { BasketContext } from '../contexts/BasketContext';
 
 const Nav = () => {

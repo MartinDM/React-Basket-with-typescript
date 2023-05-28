@@ -2,6 +2,18 @@ $primary: var(--primary);
 
 .product {
   border-radius: 3px;
+  &__unit {
+    padding-left: 12px;
+    color: gray;
+    font-weight: 400;
+  }
+  &__img {
+    height: 250px;
+    background-size: cover;
+  }
+  &__description {
+    color: #999999;
+  }
   &__qty {
     padding: 0 10px;
     font-weight: bold;

@@ -1,7 +1,7 @@
 export const calcTotalQty = (basketItems): number =>
   basketItems?.length
     ? basketItems.reduce((acc, curr) => acc + curr.qty, 0)
-    : 0;
+    : 1;
 
 export const calcTotalCost = (basketItems) => {
   if (!basketItems) return 0;
